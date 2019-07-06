@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>Firebase Firestore for web</title></head>
+<body>
+<button onclick="ReadData()">Read</button>
+<br/><br/><br/><br/>
+<input type="text" placeholder="Enter your name" id="name">
+<button onclick="WriteData()">Write</button>
+<br/><br/><br/><br/>
+<input type="text" placeholder="enter update" id="update">
+<input type="text" placeholder="enter key" id="key">
+
+<button onclick="UpdateData()">Update</button>
+<br/><br/><br/><br/>
+<input type="text" placeholder="enter key" id="keys">
+<button onclick="RemoveData()">Remove</button>
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+</body>
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+
+<script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyD3P7Y-hu_hMcFgVBT7yYJCz5LrYDCs_Uc",
+        authDomain: "tutorial-3948a.firebaseapp.com",
+        databaseURL: "https://tutorial-3948a.firebaseio.com",
+        projectId: "tutorial-3948a",
+        storageBucket: "",
+        messagingSenderId: "173999573993",
+        appId: "1:173999573993:web:7eee0ee3aa1e4a04"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+
+
+ function ReadData() {
+
+     var ref = firebase.database().ref();
+     ref.on("value", (snapshot) => {
+         console.log(snapshot.val().name);
+     })
+ }
+
+ function WriteData() {
+     var Name=document.getElementById("name").value;
+     var reference= firebase.database().ref().child('obj');
+     reference.push().set({
+         name:Name
+     });
+     //reference.push()
+ }
+
+ function UpdateData() {
+     var Data=document.getElementById("update").value;
+     var uid=document.getElementById("key").value;
+
+     var Key = firebase.database().ref().child('obj').push().key;
+
+// Write the new post's data simultaneously in the movies list and the user's movie list.
+     var updates = {};
+     //updates['/obj/' + Key] = Data;
+     updates['obj'+uid + '/' + Key] = Data;
+
+     return firebase.database().ref().child('obj').update(updates);
+ }
+
+function RemoveData() {
+    var uidd=document.getElementById("keys").value;
+
+    var Key = firebase.database().ref().child('obj');
+
+// Write the new post's data simultaneously in the movies list and the user's movie list.
+    var updates = {};
+    //updates['/obj/' + Key] = Data;
+    var r=updates['obj'+uidd + '/' + Key];
+    return firebase.database().ref().child('obj').remove(r);
+}
+</script>
+
+</html>
